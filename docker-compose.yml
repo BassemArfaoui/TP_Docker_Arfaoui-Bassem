@@ -1,0 +1,26 @@
+services:
+  web:
+    build: .
+    image: counter-app:1.0
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+    ports:
+      - "${WEB_PORT}:5000"
+    networks:
+      - app-network
+    depends_on:
+      - db-service
+
+  db-service:
+    image: redis:alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  redis-data:
