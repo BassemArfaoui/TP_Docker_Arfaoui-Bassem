@@ -15,19 +15,16 @@ pipeline {
             steps { checkout scm }
         }
 
-        stage('Unit tests') {
-            agent {
-                docker {
-                    image 'python:3.12-alpine'
-                    args '-u root'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh 'pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt'
-                sh 'pytest -v -p no:cacheprovider'
-            }
+    stage('Unit tests') {
+        steps {
+            sh '''
+                python3 -m venv .venv
+                . .venv/bin/activate
+                pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt
+                pytest -v -p no:cacheprovider
+            '''
         }
+    }
 
         stage('Build image') {
             steps {
