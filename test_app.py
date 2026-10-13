@@ -11,3 +11,6 @@ def test_index_increments_counter_and_shows_message():
     assert response.status_code == 200
     assert "vue 7 fois" in response.text
     assert "Je suis le conteneur" in response.text
+
+
+    
